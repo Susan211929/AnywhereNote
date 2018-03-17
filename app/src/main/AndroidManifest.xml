@@ -17,9 +17,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateOption"
-            android:theme="@style/CreateOption"/>
+            android:theme="@style/PopUpWindowTheme"/>
         <activity android:name=".CreateText"/>
         <activity android:name=".CreateChecklist"/>
+        <activity android:name=".ColourSelection"
+            android:theme="@style/PopUpWindowTheme"/>
     </application>
 
 </manifest>

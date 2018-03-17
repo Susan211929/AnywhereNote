@@ -20,10 +20,11 @@
             android:paddingLeft="8dp"/>
 
         <ImageView
+            android:id="@+id/select_colour"
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
-            android:src="@color/colorAccent" />
+            android:src="@android:color/holo_blue_light" />
 
         <ImageView
             android:layout_width="40dp"
@@ -37,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:hint="Start Here"
-        android:background="@color/colorAccent"
+        android:background="@android:color/holo_blue_light"
         android:inputType="textMultiLine"
         android:padding="10dp"
         android:scrollbars="vertical"
