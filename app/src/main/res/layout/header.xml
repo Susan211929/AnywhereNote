@@ -18,7 +18,7 @@
         android:layout_weight="1"
         android:fontFamily="sans-serif"
         android:gravity="bottom"
-        android:text="ren@choco.com"
+        android:text="ren@gmail.com"
         android:textColor="#FFFFFF"
         android:textSize="14sp" />
     </LinearLayout>

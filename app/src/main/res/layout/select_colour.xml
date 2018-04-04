@@ -1,36 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:background="#EEEEEE">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#EEEEEE"
+    android:padding="10dp"
+    android:id="@+id/popUp">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingBottom="10dp">
 
         <ImageView
             android:id="@+id/sel_blue"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@color/blue"
-            android:layout_margin="5dp"/>
+            android:layout_marginRight="10dp" />
 
         <ImageView
             android:id="@+id/sel_green"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@color/green"
-            android:layout_margin="5dp"/>
+            android:layout_marginRight="10dp" />
 
         <ImageView
             android:id="@+id/sel_orange"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@color/orange"
-            android:layout_margin="5dp"/>
+            android:background="@color/orange"/>
 
     </LinearLayout>
 
@@ -44,21 +45,20 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@color/red"
-            android:layout_margin="5dp"/>
+            android:layout_marginRight="10dp"/>
 
         <ImageView
             android:id="@+id/sel_purple"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@color/purple"
-            android:layout_margin="5dp"/>
+            android:layout_marginRight="10dp"/>
 
         <ImageView
             android:id="@+id/sel_white"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@color/white"
-            android:layout_margin="5dp"/>
+            android:background="@color/white"/>
 
     </LinearLayout>
 

@@ -14,7 +14,7 @@
             android:layout_height="match_parent"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:hint="Name of the Note"
+            android:hint="Title"
             android:background="#ffffff"
             android:layout_margin="8dp"
             android:paddingLeft="8dp"/>
@@ -24,7 +24,7 @@
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
-            android:src="@android:color/holo_blue_light" />
+            android:background="@android:color/holo_blue_light" />
 
         <ImageView
             android:layout_width="40dp"
@@ -35,6 +35,7 @@
         </LinearLayout>
 
     <EditText
+        android:id="@+id/txt_input"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:hint="Start Here"
