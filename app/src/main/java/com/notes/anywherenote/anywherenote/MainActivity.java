@@ -15,8 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity{
-
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+    TextView email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +40,15 @@ public class MainActivity extends AppCompatActivity{
         Toolbar toolbar=(Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);//Setting overflow menu
         NavigationView navigationview = (NavigationView) findViewById(R.id.navigationview);
+        navigationview.setNavigationItemSelectedListener(this);
         DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout, toolbar,R.string.drawer_open,R.string.drawer_close);
         mDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
+
+        /*For changing email id in header of navigation bar*/
+        View headerView = navigationview.getHeaderView(0);
+        email = (TextView) headerView.findViewById(R.id.email);
     }
 
     @Override
@@ -53,14 +58,28 @@ public class MainActivity extends AppCompatActivity{
     }
 
     /*@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_sign_out: {
-                // do your sign-out stuff
-                break;
-            }
-            // case blocks for other MenuItems (if any)
+    public boolean onOptionsItemSelected(MenuItem item) { //For overflow menu
+        switch (item.getItemId())
+        {
+
         }
         return false;
     }*/
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.setting:
+                startActivityForResult(new Intent(MainActivity.this, Setting.class),1);
+                break;
+        }
+            return true;
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (requestCode == 1)
+            if (resultCode == RESULT_OK) {
+                email.setText(data.getData().toString());
+            }
+    }
 }

@@ -17,19 +17,9 @@
         android:layout_weight="1"
         android:text="AnywhereNote"
         android:gravity="left|center_vertical"
-        android:textSize="23sp"
+        android:textSize="28sp"
         android:textColor="#ffff"
         android:textStyle="italic"
         android:background="?attr/colorPrimary"/>
-
-    <ImageView
-        android:id="@+id/search"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:background="@color/colorPrimary"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:src="@drawable/search"
-        android:textColor="#fff" />
 </LinearLayout>
 </android.support.v7.widget.Toolbar>

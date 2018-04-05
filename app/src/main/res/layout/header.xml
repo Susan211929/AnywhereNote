@@ -18,8 +18,9 @@
         android:layout_weight="1"
         android:fontFamily="sans-serif"
         android:gravity="bottom"
-        android:text="ren@gmail.com"
+        android:text="Please provide gmail id"
         android:textColor="#FFFFFF"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:id="@+id/email"/>
     </LinearLayout>
 </RelativeLayout>

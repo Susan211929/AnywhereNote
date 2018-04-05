@@ -20,6 +20,7 @@
             android:theme="@style/PopUpWindowTheme"/>
         <activity android:name=".CreateText"/>
         <activity android:name=".CreateChecklist"/>
+        <activity android:name=".Setting"/>
     </application>
 
 </manifest>
