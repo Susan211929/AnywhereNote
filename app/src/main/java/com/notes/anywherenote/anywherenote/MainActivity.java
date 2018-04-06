@@ -2,21 +2,27 @@ package com.notes.anywherenote.anywherenote;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     TextView email;
+    AlertDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,29 +63,48 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    /*@Override
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) { //For overflow menu
         switch (item.getItemId())
         {
-
+            case R.id.select_colour:
+                Toast.makeText(this, "selected", Toast.LENGTH_SHORT).show();
+                break;
         }
-        return false;
-    }*/
+        return true;
+    }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.setting:
-                startActivityForResult(new Intent(MainActivity.this, Setting.class),1);
+                final AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
+                View setting = getLayoutInflater().inflate(R.layout.setting, null);
+                final EditText emailValidate = (EditText) setting.findViewById(R.id.edt_eid);
+                Button done = (Button) setting.findViewById(R.id.done);
+                done.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String email_input = emailValidate.getText().toString().trim();
+                        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+                        if(email_input.equals(""))
+                            Toast.makeText(getApplicationContext(), "Please provide email address", Toast.LENGTH_SHORT).show();
+                        else if (email_input.matches(emailPattern)) {
+                            email.setText(email_input);
+                            closeDialog();
+                        } else
+                            Toast.makeText(getApplicationContext(), "Invalid email address", Toast.LENGTH_SHORT).show();
+                    }
+
+                    void closeDialog() {
+                        dialog.dismiss();
+                    }
+                });
+                adb.setView(setting);
+                dialog = adb.create();
+                dialog.show();
                 break;
         }
-            return true;
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if (requestCode == 1)
-            if (resultCode == RESULT_OK) {
-                email.setText(data.getData().toString());
-            }
+        return true;
     }
 }
