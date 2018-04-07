@@ -12,11 +12,16 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,25 +63,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {         //For overflow menu
-        getMenuInflater().inflate(R.menu.overflow_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) { //For overflow menu
-        switch (item.getItemId())
-        {
-            case R.id.select_colour:
-                Toast.makeText(this, "selected", Toast.LENGTH_SHORT).show();
-                break;
-        }
-        return true;
-    }
-
-    @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.view:
+                View view = getLayoutInflater().inflate(R.layout.view, (ViewGroup) findViewById(R.id.color_view));
+                PopupWindow pw = new PopupWindow(view, WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.WRAP_CONTENT,true);
+                pw.showAtLocation(view, Gravity.CENTER,0,0);
+                ImageView all = (ImageView) view.findViewById(R.id.all);
+                ImageView red = (ImageView) view.findViewById(R.id.red);
+                ImageView blue = (ImageView) view.findViewById(R.id.blue);
+                ImageView orange = (ImageView) view.findViewById(R.id.orange);
+                ImageView white = (ImageView) view.findViewById(R.id.white);
+                ImageView purple = (ImageView) view.findViewById(R.id.purple);
+                ImageView green = (ImageView) view.findViewById(R.id.green);
+                break;
             case R.id.setting:
                 final AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
                 View setting = getLayoutInflater().inflate(R.layout.setting, null);
