@@ -12,7 +12,7 @@
         android:orientation="horizontal"
         android:id="@+id/first_ll"
         android:layout_centerInParent="true"
-        android:background="@drawable/login_btn_prop">
+        android:background="@drawable/login_ip_prop">
         <ImageView
             android:id="@+id/user"
             android:layout_width="30dp"
@@ -34,7 +34,7 @@
         android:id="@+id/second_ll"
         android:layout_below="@id/first_ll"
         android:layout_centerInParent="true"
-        android:background="@drawable/login_btn_prop"
+        android:background="@drawable/login_ip_prop"
         android:layout_marginTop="10dp">
     <ImageView
         android:layout_width="30dp"
