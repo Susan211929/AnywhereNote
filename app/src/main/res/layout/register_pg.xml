@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_bckgrd">
+
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
@@ -44,40 +45,57 @@
         android:layout_centerInParent="true"
         android:background="@drawable/login_ip_prop"
         android:layout_marginTop="10dp">
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/lock"
-        android:layout_marginTop="2dp"/>
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/lock"
+            android:layout_marginTop="2dp"/>
 
-    <EditText
-        android:id="@+id/pass_ip"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:layout_centerInParent="true"
-        android:hint="Password"
-        android:textColorHint="#757575"
-        android:background="@android:color/transparent"
-        android:paddingLeft="6dp"/>
+        <EditText
+            android:id="@+id/pass_ip1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:layout_centerInParent="true"
+            android:hint="Password"
+            android:textColorHint="#757575"
+            android:background="@android:color/transparent"
+            android:paddingLeft="6dp"/>
     </LinearLayout>
-    <Button
-        android:id="@+id/log_btn"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/third_ll"
         android:layout_below="@id/second_ll"
         android:layout_centerInParent="true"
-        android:text="Login"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/btn_layout"/>
-    <TextView
-        android:id="@+id/sign_up"
+        android:background="@drawable/login_ip_prop"
+        android:layout_marginTop="10dp">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/lock"
+            android:layout_marginTop="2dp"/>
+
+        <EditText
+            android:id="@+id/pass_ip2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:layout_centerInParent="true"
+            android:hint="Retype Password"
+            android:textColorHint="#757575"
+            android:background="@android:color/transparent"
+            android:paddingLeft="6dp"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/reg_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Don't have an account? Sign up here"
-        android:layout_below="@id/log_btn"
-        android:textColor="#FFFFFF"
+        android:layout_below="@id/third_ll"
         android:layout_centerInParent="true"
-        android:layout_marginTop="30dp"/>
+        android:text="Register"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_layout"/>
 </RelativeLayout>
