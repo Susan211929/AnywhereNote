@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1076926045955",
+    "firebase_url": "https://anywherenote-4e7bf.firebaseio.com",
+    "project_id": "anywherenote-4e7bf",
+    "storage_bucket": "anywherenote-4e7bf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1076926045955:android:98f44d769ca3b19e",
+        "android_client_info": {
+          "package_name": "com.notes.anywherenote.anywherenote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1076926045955-9qogmelabbbk1a3flnl9luvvbcc2eeev.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.notes.anywherenote.anywherenote",
+            "certificate_hash": "db6de2d73a38a4cd60af3512fec1546b67143b3d"
+          }
+        },
+        {
+          "client_id": "1076926045955-4tah1t5elnnt5t0rrij8j5gojamp3t7s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_E9yIf7h22KWM9ZeEtte4oR2gJviwqFo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1076926045955-4tah1t5elnnt5t0rrij8j5gojamp3t7s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
