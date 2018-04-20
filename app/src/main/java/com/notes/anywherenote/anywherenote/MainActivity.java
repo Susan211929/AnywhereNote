@@ -2,6 +2,7 @@ package com.notes.anywherenote.anywherenote;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -10,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,13 +24,17 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     TextView email;
     AlertDialog dialog;
+    private EditText pass1,pass2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +65,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
-        /*For changing email id in header of navigation bar*/
+        /*For setting email id in header of navigation bar*/
         View headerView = navigationview.getHeaderView(0);
         email = (TextView) headerView.findViewById(R.id.email);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        email.setText(user.getEmail());
     }
 
     @Override
@@ -82,20 +90,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.setting:
                 final AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
                 View setting = getLayoutInflater().inflate(R.layout.setting, null);
-                final EditText emailValidate = (EditText) setting.findViewById(R.id.edt_eid);
+                pass1= (EditText) setting.findViewById(R.id.pass1);
+                pass2= (EditText) setting.findViewById(R.id.pass2);
                 Button done = (Button) setting.findViewById(R.id.done);
                 done.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String email_input = emailValidate.getText().toString().trim();
-                        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-                        if(email_input.equals(""))
-                            Toast.makeText(getApplicationContext(), "Please provide email address", Toast.LENGTH_SHORT).show();
-                        else if (email_input.matches(emailPattern)) {
-                            email.setText(email_input);
+                        if(checkPassword(pass1,pass2))
+                        {
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            user.updatePassword(pass1.getText().toString())
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Log.d("success", "User password updated.");
+                                            }
+                                        }
+                                    });
                             closeDialog();
-                        } else
-                            Toast.makeText(getApplicationContext(), "Invalid email address", Toast.LENGTH_SHORT).show();
+                        }
                     }
                     void closeDialog() {
                         dialog.dismiss();
@@ -105,7 +119,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 dialog = adb.create();
                 dialog.show();
                 break;
+            case R.id.logout:
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(this,Login.class));
+                break;
         }
         return true;
+    }
+    private boolean checkPassword(TextView pass1, TextView pass2) {
+        if(pass1.getText().toString().equals(""))
+        {
+            Toast.makeText(this, "Password field is empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if(pass2.getText().toString().equals(""))
+        {
+            Toast.makeText(this, "Password field is empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (pass1.getText().toString().equals(pass2.getText().toString()))
+            return true;
+        Toast.makeText(this, "Password fields don't match", Toast.LENGTH_SHORT).show();
+        return false;
     }
 }
