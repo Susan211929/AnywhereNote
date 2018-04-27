@@ -1,6 +1,7 @@
 package com.notes.anywherenote.anywherenote;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,6 +27,8 @@ import static com.google.android.gms.internal.zzs.TAG;
 public class Login extends Activity{
     private FirebaseAuth mAuth;
     private EditText username,pass;
+    private ProgressDialog pd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +39,7 @@ public class Login extends Activity{
         Button login = (Button) findViewById(R.id.log_btn);
         TextView register = (TextView) findViewById(R.id.sign_up);
         mAuth = FirebaseAuth.getInstance();
+        pd=new ProgressDialog(this);
 
         if (mAuth.getCurrentUser() != null)
             startActivity(new Intent(Login.this,MainActivity.class));
@@ -49,6 +53,8 @@ public class Login extends Activity{
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pd.setTitle("Please wait, logging in...");
+                pd.show();
                 if(checkMail(username) && checkPassword(pass)) {
                     mAuth.signInWithEmailAndPassword(username.getText().toString(), pass.getText().toString()).addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -57,8 +63,10 @@ public class Login extends Activity{
                                 Log.d(TAG, "signInWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 startActivity(new Intent(Login.this, MainActivity.class));
+                                pd.dismiss();
                                 finish();
                             } else {
+                                pd.dismiss();
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
                                 Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                             }

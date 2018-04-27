@@ -1,6 +1,7 @@
 package com.notes.anywherenote.anywherenote;
 
 import android.app.Activity;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
@@ -10,16 +11,31 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by susan_000 on 04-Mar-18.
  */
 
 public class CreateText extends Activity {
+
+    private EditText title,body;
+    private ImageView done;
+    private DatabaseReference mDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.text);
+
+        title= (EditText) findViewById(R.id.title);
+        body= (EditText) findViewById(R.id.txt_input);
+        done= (ImageView) findViewById(R.id.done);
+        String uid= FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mDatabase = FirebaseDatabase.getInstance().getReference("users").child(uid);
 
         /*To change colour of note*/
         final EditText input = (EditText) findViewById(R.id.txt_input);
@@ -85,6 +101,26 @@ public class CreateText extends Activity {
                         pw.dismiss();
                     }
                 });
+            }
+        });
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ColorDrawable drawable = (ColorDrawable) colour.getBackground();
+                if(drawable.getColor() == ContextCompat.getColor(CreateText.this,R.color.white))
+                    mDatabase.child("text").child(title.getText().toString()).child("colour").setValue("white");
+                else if(drawable.getColor() == ContextCompat.getColor(CreateText.this,R.color.blue))
+                    mDatabase.child("text").child(title.getText().toString()).child("colour").setValue("blue");
+                else if(drawable.getColor() == ContextCompat.getColor(CreateText.this,R.color.red))
+                    mDatabase.child("text").child(title.getText().toString()).child("colour").setValue("red");
+                else if(drawable.getColor() == ContextCompat.getColor(CreateText.this,R.color.green))
+                    mDatabase.child("text").child(title.getText().toString()).child("colour").setValue("green");
+                else if (drawable.getColor() == ContextCompat.getColor(CreateText.this,R.color.purple))
+                    mDatabase.child("text").child(title.getText().toString()).child("colour").setValue("purple");
+                else if(drawable.getColor() == ContextCompat.getColor(CreateText.this,R.color.orange))
+                    mDatabase.child("text").child(title.getText().toString()).child("colour").setValue("orange");
+                mDatabase.child("text").child(title.getText().toString()).child("body").setValue(body.getText().toString());
+                finish();
             }
         });
     }

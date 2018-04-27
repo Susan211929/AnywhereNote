@@ -16,6 +16,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import static com.google.android.gms.internal.zzs.TAG;
 
@@ -27,6 +29,7 @@ public class Register extends Activity {
 
     private FirebaseAuth mAuth;
     private EditText username,pass1,pass2;
+    private DatabaseReference mDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +50,8 @@ public class Register extends Activity {
                             if (task.isSuccessful()) {
                                 Log.i("success", "User succesfully signed in");
                                 FirebaseUser user = mAuth.getCurrentUser();
+                                mDatabase = FirebaseDatabase.getInstance().getReference("users");
+                                mDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
                                 startActivity(new Intent(Register.this,MainActivity.class));
                                 finish();
                             } else {

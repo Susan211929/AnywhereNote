@@ -10,9 +10,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,18 +31,84 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.R.attr.data;
+import static android.R.attr.key;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     TextView email;
     AlertDialog dialog;
+    DatabaseReference r1,r2;
+    String uid,text_title,colour,bod0y,checklist_title;
     private EditText pass1,pass2;
-
+    DatabaseReference mDatabase;
+    ChildEventListener childEventListener1,childEventListener2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /*Retrieving titles from db*/
+        /*For text*/
+        uid= FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mDatabase = FirebaseDatabase.getInstance().getReference("users").child(uid);
+        r1 = mDatabase.child("text");
+        childEventListener1 = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+                text_title=dataSnapshot.getKey();
+                colour=(String)dataSnapshot.child("colour").getValue();
+                print(text_title,colorSelect(colour),R.drawable.note);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError)
+            {}
+        };
+        r1.addChildEventListener(childEventListener1);
+
+        /*For Checklist*/
+        r2 = mDatabase.child("checklist");
+        childEventListener2 = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+                checklist_title=dataSnapshot.getKey();
+                print(checklist_title,colorSelect("white"),R.drawable.check_mark);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError)
+            {}
+        };
+        r2.addChildEventListener(childEventListener2);
 
         /*Font style for app name*/
         TextView tx = (TextView)findViewById(R.id.app_name);
@@ -142,4 +211,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toast.makeText(this, "Password fields don't match", Toast.LENGTH_SHORT).show();
         return false;
     }
+
+    public void print(String s1, int s2, int s3) {
+        try {
+            TableLayout tableLayout = (TableLayout) findViewById(R.id.tableLayout);
+            View tableRow = LayoutInflater.from(this).inflate(R.layout.main_item_layout, null, false);
+            TextView t1 = (TextView) tableRow.findViewById(R.id.t1);
+            ImageView i1 = (ImageView) tableRow.findViewById(R.id.i1);
+            t1.setText(s1);t1.setBackgroundResource(s2);
+            i1.setImageResource(s3);
+            i1.setBackgroundResource(s2);
+            tableLayout.addView(tableRow);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public int colorSelect(String s)
+    {
+        switch(s)
+        {
+            case "blue":return R.color.blue;
+            case "green":return R.color.green;
+            case "orange":return R.color.orange;
+            case "red":return R.color.red;
+            case "white":return R.color.white;
+            case "purple":return R.color.purple;
+        }
+        return 0;
+    }
+
 }
