@@ -11,6 +11,7 @@
         android:background="@color/colorPrimary">
 
         <EditText
+            android:id="@+id/title"
             android:layout_height="match_parent"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -27,6 +28,7 @@
             android:background="@android:color/holo_blue_light" />
 
         <ImageView
+            android:id="@+id/done"
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_margin="8dp"

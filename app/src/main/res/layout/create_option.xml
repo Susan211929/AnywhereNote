@@ -19,9 +19,9 @@
         android:id="@+id/add_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="8dp"
         android:text="Text"
-        android:textSize="20sp"
-        android:padding="8dp"/>
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/add_checklist"
