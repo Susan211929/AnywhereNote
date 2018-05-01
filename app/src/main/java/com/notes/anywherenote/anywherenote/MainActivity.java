@@ -10,11 +10,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +20,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,23 +34,19 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-import static android.R.attr.data;
-import static android.R.attr.key;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     TextView email;
     AlertDialog dialog;
     DatabaseReference r1,r2;
-    String uid,text_title,colour,bod0y,checklist_title;
+    String uid,text_title,colour,checklist_title;
     private EditText pass1,pass2;
     DatabaseReference mDatabase;
     ChildEventListener childEventListener1,childEventListener2;
+    private ListView lv;
+    private MainListAdapter mainAdapter;
+    private ArrayList<MainItem> list = new ArrayList();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,9 +60,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         childEventListener1 = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                text_title=dataSnapshot.getKey();
-                colour=(String)dataSnapshot.child("colour").getValue();
-                print(text_title,colorSelect(colour),R.drawable.note);
+                //text_title=dataSnapshot.getKey();
+                //colour=(String)dataSnapshot.child("colour").getValue();
+                list.add(new MainItem("text",dataSnapshot.getKey(),(String)dataSnapshot.child("colour").getValue()));
+                System.out.println("In:"+list.size());
             }
 
             @Override
@@ -91,8 +86,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         childEventListener2 = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                checklist_title=dataSnapshot.getKey();
-                print(checklist_title,colorSelect("white"),R.drawable.check_mark);
+                //checklist_title=dataSnapshot.getKey();
+                list.add(new MainItem("checklist",dataSnapshot.getKey(),"teal"));
+                System.out.println("In:"+list.size());
+
+        /*For listing the checklists and notes*/
+                lv= (ListView) findViewById(R.id.main_list);
+                System.out.println("Out:"+list.size());
+                mainAdapter=new MainListAdapter(MainActivity.this,R.layout.main_item_layout,list);
+                lv.setAdapter(mainAdapter);
+                //mainAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -109,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             {}
         };
         r2.addChildEventListener(childEventListener2);
+
 
         /*Font style for app name*/
         TextView tx = (TextView)findViewById(R.id.app_name);
@@ -139,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         email = (TextView) headerView.findViewById(R.id.email);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         email.setText(user.getEmail());
+
     }
 
     @Override
@@ -211,33 +216,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toast.makeText(this, "Password fields don't match", Toast.LENGTH_SHORT).show();
         return false;
     }
-
-    public void print(String s1, int s2, int s3) {
-        try {
-            TableLayout tableLayout = (TableLayout) findViewById(R.id.tableLayout);
-            View tableRow = LayoutInflater.from(this).inflate(R.layout.main_item_layout, null, false);
-            TextView t1 = (TextView) tableRow.findViewById(R.id.t1);
-            ImageView i1 = (ImageView) tableRow.findViewById(R.id.i1);
-            t1.setText(s1);t1.setBackgroundResource(s2);
-            i1.setImageResource(s3);
-            i1.setBackgroundResource(s2);
-            tableLayout.addView(tableRow);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    public int colorSelect(String s)
-    {
-        switch(s)
-        {
-            case "blue":return R.color.blue;
-            case "green":return R.color.green;
-            case "orange":return R.color.orange;
-            case "red":return R.color.red;
-            case "white":return R.color.white;
-            case "purple":return R.color.purple;
-        }
-        return 0;
-    }
-
 }

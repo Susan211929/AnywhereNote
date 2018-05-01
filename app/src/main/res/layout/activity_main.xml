@@ -4,7 +4,7 @@
     android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_img"
+    android:background="#ffffff"
     android:fitsSystemWindows="true">
 
     <RelativeLayout
@@ -20,18 +20,10 @@
                     android:id="@+id/toolbar"
                     layout="@layout/toolbar_layout" />
 
-                <ScrollView
+                <ListView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/tableLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_below="@+id/linearLayout"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentEnd="true"></TableLayout>
-                </ScrollView>
+                    android:layout_height="match_parent"
+                    android:id="@+id/main_list"></ListView>
             </LinearLayout>
 
         <android.support.design.widget.FloatingActionButton

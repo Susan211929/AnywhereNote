@@ -2,62 +2,49 @@ package com.notes.anywherenote.anywherenote;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TableLayout;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by susan_000 on 04-Mar-18.
  */
 
-public class CreateChecklist extends Activity {
+public class CreateChecklist extends Activity{
 
-    List<Item> list = new ArrayList<>();
+    ArrayList<Item> list = new ArrayList<>();
+    private ChecklistAdapter checklistAdapter;
     private DatabaseReference mDatabase;
     private EditText input,title;
     private Dialog dialog;
+    private ListView lv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.checklist);
-
-
-
-        list.add(new Item("hi",false));
-        list.add(new Item("hello",true));
-        list.add(new Item("bye",false));
-        list.add(new Item("get lost",true));
-        print("TITLE",list);
-
-
-
-
 
         ImageView add = (ImageView) findViewById(R.id.add);
         String uid= FirebaseAuth.getInstance().getCurrentUser().getUid();
         mDatabase = FirebaseDatabase.getInstance().getReference("users").child(uid);
         ImageView done = (ImageView) findViewById(R.id.done);
         title = (EditText) findViewById(R.id.title);
+        lv= (ListView) findViewById(R.id.lv);
+        checklistAdapter = new ChecklistAdapter(this, R.layout.list_item, list);
+        lv.setAdapter(checklistAdapter);
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,11 +62,17 @@ public class CreateChecklist extends Activity {
                     @Override
                     public void onClick(View v) {
                         list.add(new Item((input.getText().toString()),false));
+                        try {
+                            checklistAdapter.notifyDataSetChanged();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         dialog.dismiss();
                     }
                 });
             }
         });
+
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,28 +81,19 @@ public class CreateChecklist extends Activity {
             }
         });
 
-    }
-    public void print(String head, List items) {
-        try {
-            ScrollView sv = (ScrollView) findViewById(R.id.sv);
-            View item = LayoutInflater.from(this).inflate(R.layout.list_item, null, false);
-            TextView title = (TextView) findViewById(R.id.title);
-            TextView t1 = (TextView) item.findViewById(R.id.item);
-            CheckBox cb = (CheckBox) item.findViewById(R.id.cb);
-            title.setText(head);
-            Item current;
-            for(Object temp:items) {
-                current=(Item)temp;
-                t1.setText(current.value);
-                System.out.println(current.value);
-                if(current.flag)
-                    cb.setChecked(true);
-                else
-                    cb.setChecked(false);
-                sv.addView(item);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView v = (TextView) ((LinearLayout) view).getChildAt(0);
+                if(!list.get(position).isFlag()) {
+                    v.setPaintFlags(v.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    list.get(position).setFlag(true);
+                }
+                else {
+                    v.setPaintFlags(v.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                    list.get(position).setFlag(false);
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 }

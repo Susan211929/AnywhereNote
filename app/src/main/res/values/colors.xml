@@ -9,4 +9,5 @@
     <color name="red">@android:color/holo_red_light</color>
     <color name="purple">@android:color/holo_purple</color>
     <color name="white">@android:color/white</color>
+    <color name="teal">#1DE9B6</color>
 </resources>
